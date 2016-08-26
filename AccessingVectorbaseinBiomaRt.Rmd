@@ -1,0 +1,56 @@
+---
+title: "Accessing Vectorbase in R using biomaRt"
+author: "Marion Shadbolt"
+date: "26 August 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Installing biomaRt
+
+If you haven't already installed biomaRt use these commands:
+
+```{r eval=F}
+## try http:// if https:// URLs are not supported
+source("https://bioconductor.org/biocLite.R")
+biocLite("biomaRt")
+```
+
+## Viewing available biomart databases
+
+By default, biomaRt thinks you are interested in ensembl genes, it sets your `host = "www.ensembl.org"` so that if you follow the commands in the guide you get:
+
+```{r}
+library(biomaRt)
+listMarts()
+```
+
+Which isn't great because the vectorbase databases are not listed, to see what vectorbase databases are available we need to change the host to `biomart.vectorbase.org` like this:
+
+```{r}
+listMarts(host = "biomart.vectorbase.org")
+```
+
+You can then choose which database you are interested in, for example let's choose the `"vb_gene_mart_1608"`
+
+```{r}
+vectorbase_gene <- useMart("vb_gene_mart_1608", host = "biomart.vectorbase.org")
+listDatasets(vectorbase_gene)
+```
+
+## Storing a dataset for further use
+So we can see all the available genesets for the organisms on hosted on vectorbase. If we want the *Aedes aegypti* dataset:
+
+```{r}
+aaegGenes<-useDataset("aaegypti_eg_gene", vectorbase_gene)
+aaegGenes
+```
+
+If you already know that you're only interested in *Ae. aegypti* genes you can skip a few of the steps above by directly using the following commands:
+```{r}
+aaegGenes<-useMart(biomart = "vb_gene_mart_1608", dataset = "aaegypti_eg_gene", host = "biomart.vectorbase.org")
+aaegGenes
+```
