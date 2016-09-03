@@ -4,7 +4,7 @@ import sys
 import csv
 
 '''
-Script to convert a vcf file aligned to AaegL1-3 i.e. supercont1.### into chromosomes according to
+Script to convert a vcf file aligned to AaegL1-3 i.e. supercont1.* into chromosomes according to
 Juneja et al. 2014 assembly.
 Expected input: Standard VCF file where header rows commence with # and the first two columns are:
     CHROM: i.e. supercont1.*
@@ -12,6 +12,7 @@ Expected input: Standard VCF file where header rows commence with # and the firs
 Output is a copied vcf file prefixed with juneja, i.e. juneja.<inputfilename>
 Usage: ./python <inputfilename>
 Dependencies: Needs to be run in the same directory as the genetic map assembly file in .csv format.
+No non-base module dependencies.
 Expected filename: "JunejaGeneticAssembly.csv"
 This file is from Juneja et al. 2014 Table S2 http://dx.doi.org/10.1371/journal.pntd.0002652
 
