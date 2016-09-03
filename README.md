@@ -4,7 +4,7 @@ A set of scripts to help with Ae.aegypti genomic analyses.
 
 ## Completed:
 * VCF converter from superconts to Juneja assembly physical positions
-* Tutorials on how to access BioMart using R package biomaRt
+* Tutorials on how to access BioMart using R package biomaRt (See GeneAnnotation Folder)
 
 ## On the wishlist:
 
