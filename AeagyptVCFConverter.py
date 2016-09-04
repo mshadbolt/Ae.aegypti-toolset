@@ -4,15 +4,15 @@ import sys
 import csv
 
 '''
-Script to convert a vcf file aligned to AaegL1-3 i.e. supercont1.* into chromosomes according to
+Script to convert a vcf file aligned to AaegL1-3 i.e. supercont1.### into chromosomes according to
 Juneja et al. 2014 assembly.
 Expected input: Standard VCF file where header rows commence with # and the first two columns are:
     CHROM: i.e. supercont1.*
     POS: basepair position of SNP
 Output is a copied vcf file prefixed with juneja, i.e. juneja.<inputfilename>
-Usage: ./python <inputfilename>
+SNP loci are sorted in order of chromosome name, then bp position
+Usage: python <inputfilename>
 Dependencies: Needs to be run in the same directory as the genetic map assembly file in .csv format.
-No non-base module dependencies.
 Expected filename: "JunejaGeneticAssembly.csv"
 This file is from Juneja et al. 2014 Table S2 http://dx.doi.org/10.1371/journal.pntd.0002652
 
@@ -84,6 +84,7 @@ try:
     # Open inputfile, read each line and write to output file with converted positions
     inputVcf = open(inputfilename, "r")
     outputVcf = open(convertedfilename, "w")
+    linesToWrite = []
     for line in inputVcf:
         if line[0] is "#":
             outputVcf.write(line)
@@ -91,9 +92,13 @@ try:
             linelist = line.split("\t")
             converted = PosConverter.convert(linelist[0], int(linelist[1]))
             linelist[0] = converted[0]
-            linelist[1] = str(converted[1])
-            outputVcf.write("\t".join(linelist))
+            linelist[1] = converted[1]
+            linesToWrite.append(linelist)
     inputVcf.close()
+    linesToWrite.sort()
+    for item in linesToWrite:
+        item[1] = str(item[1])
+        outputVcf.write("\t".join(item))
     outputVcf.close()
     print("done.")
 except IOError as e:
