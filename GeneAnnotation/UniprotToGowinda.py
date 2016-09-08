@@ -36,11 +36,10 @@ A constant-space parser for the GeneOntology OBO v1.2 format
 Version 1.0
 
 From: https://techoverflow.net/blog/2013/11/18/a-geneontology-obo-v1.2-parser-in-python/
-
+author: "Uli Koehler"
+copyright: "Copyright 2013 Uli Koehler"
+license: "Apache v2.0"
 """
-__author__    = "Uli Koehler"
-__copyright__ = "Copyright 2013 Uli Koehler"
-__license__   = "Apache v2.0"
 
 def processGOTerm(goTerm):
     """
