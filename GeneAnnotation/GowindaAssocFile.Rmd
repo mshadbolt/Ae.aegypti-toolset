@@ -64,7 +64,7 @@ GOAssoc<-GOAssoc[GOAssoc$go_accession != "",]
 
 Now we'll use a function to collect all Gene names associated to each GO term and store in
 
-```{r cache = T}
+```{r, cache = T}
 GOIDGeneLookup<-function(uniqueGOtable, fullAnnTable){
   GOTableLength<-length(uniqueGOtable[,1])
   # Create a vector to store results that is the same length as the GO term table
@@ -82,9 +82,12 @@ GOIDGeneLookup<-function(uniqueGOtable, fullAnnTable){
 # Call the function on the data frames we have already created
 GOWTable<-GOIDGeneLookup(GOAssoc, goids)
 # Now we have our table in the right format for Gowinda
-head(GOWTable)
+head(GOWTable[,1:2])
 # Just need to save it as a file as follows:
 write.table(x = GOWTable, file = "GowindaGeneSetFile.txt", quote = F, sep = "\t", col.names = F, row.names = F)
 
 ```
 
+The outputted `GowindaGeneSetFile.txt` can now be passed to Gowinda with GO terms from the latest BioMart information.
+
+Back to homepage: <https://mshadbolt.github.io/Ae_aegypti-toolset/>
