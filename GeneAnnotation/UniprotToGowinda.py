@@ -15,7 +15,10 @@ this file to create a dictionary of GO terms with associated genes. Finally it d
 ontology consortium website, outputting a tab-delimited textfile called 'UniprotGOassocGowinda.txt' in the format required by Gowinda i.e.:
 <GO Accession>\t<underscore separated GO name>\t<space separated string of associated genes>.
 
-Could be easily adapted for any other organism in the uniprot database
+Notes: 
+* User may need to install the wget module if they don't already have it installed: pip install wget (https://pypi.python.org/pypi/wget)
+* Could be easily adapted for any other organism in the uniprot database by modifying the uniprot query url, see: 
+http://www.uniprot.org/help/programmatic_access
 
 Author: Marion Shadbolt, apart from the first two methods for obo file parsing (citation information below).
 Last updated: 08/09/2016
