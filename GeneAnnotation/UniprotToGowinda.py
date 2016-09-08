@@ -12,7 +12,7 @@ DESCRIPTION:
 Program to download and create the 'geneset' file for input into Gowinda for the species Aedes aegypti from the uniprot
 database. The program first downloads the GO terms for all Aedes aegypti genes directly from Uniprot. It then parses
 this file to create a dictionary of GO terms with associated genes. Finally it downloads the obo file from the gene
-ontology consortium website, outputting a tab-delimited textfile in the format required by Gowinda i.e.:
+ontology consortium website, outputting a tab-delimited textfile called 'UniprotGOassocGowinda.txt' in the format required by Gowinda i.e.:
 <GO Accession>\t<underscore separated GO name>\t<space separated string of associated genes>.
 
 Could be easily adapted for any other organism in the uniprot database
