@@ -4,8 +4,10 @@ A set of scripts to help with Ae.aegypti genomic analyses.
 Website: https://mshadbolt.github.io/Ae_aegypti-toolset/
 
 ## Completed:
-* VCF converter from superconts to Juneja assembly physical positions
-* Tutorials on how to access BioMart using R package biomaRt (See GeneAnnotation Folder)
+* VCF converter from superconts to Juneja assembly physical positions, see AeagyptVCFConverter.py
+* Tutorials on how to access VectorBase BioMart using R package biomaRt (See Tutorials Folder)
+* Python script to download Uniprot GO annotations and create file for input to Gowinda, see UniprotToGowinda.py
+
 
 ## On the wishlist:
 
