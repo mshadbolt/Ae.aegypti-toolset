@@ -1,0 +1,93 @@
+---
+title: "Mining GO ids for Gowinda from BioMart"
+author: "Marion Shadbolt"
+date: "4 September 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load libraries
+
+To get an up to date version of Gene ontology terms for _Aedes aegypti_ genes, first load relevant libraries and get the genes biomart (see my other tutorial for more info on the biomart):
+__Note that the biomart name will change in the future so may need to be updated__
+
+```{r cache = TRUE}
+library(biomaRt)
+aaegGenes<-useMart(biomart = "vb_gene_mart_1608", dataset = "aaegypti_eg_gene", host = "biomart.vectorbase.org")
+```
+
+## Get a list of all Aedes aegypti genes
+
+```{r cache = T}
+totalgenes<-getBM(
+  attributes = c("ensembl_gene_id"),
+  mart = aaegGenes)
+```
+
+## Get all the GO IDs and names associated with those genes
+
+```{r cache = T}
+goids<-getBM(
+  # These are the attributes you want returned as columns in your data frame
+  attributes = c("go_accession", "go_name_1006", "ensembl_gene_id"),
+  # The filters is what attribute you are filtering on
+  filters = "ensembl_gene_id", 
+  # values is your vector of gene IDs
+  values = totalgenes$ensembl_gene_id,
+  # mart is your presaved BioMart database
+  mart = aaegGenes)
+
+```
+
+Here you could also choose to filter based on GO evidence code by adding `"go_evidence_code"` as a filter and create a list from the following:  
+`"IC"` - Inferred by curator  
+`"IDA"` - Inferred by direct assay  
+`"IEA"` - Inferred from electronic annotation  
+`"IMP"` - Inferred from mutant phenotype  
+`"ISS"` - Inferred from Sequence of structural similarity  
+
+## Transform table from one to one to one GOID to many genes format
+
+```{r cache = T}
+# Replace all the spaces with underscores
+goids$go_name_1006<-gsub(pattern = " ", replacement = "_", x = goids$go_name_1006)
+# Get Unique list of GOIDs
+GOAssoc<-goids[,1:2]
+# Remove duplicates
+GOAssoc<-GOAssoc[!duplicated(GOAssoc),]
+# Remove blank
+GOAssoc<-GOAssoc[GOAssoc$go_accession != "",]
+```
+
+Now we'll use a function to collect all Gene names associated to each GO term and store in
+
+```{r, cache = T}
+GOIDGeneLookup<-function(uniqueGOtable, fullAnnTable){
+  GOTableLength<-length(uniqueGOtable[,1])
+  # Create a vector to store results that is the same length as the GO term table
+  geneids<-1:GOTableLength
+  # Iterate over each goterm and store string of Gene IDs associated to that term
+  for (i in 1:GOTableLength){
+    GOID<-GOAssoc$go_accession[i]
+    geneids[i]<-paste(goids$ensembl_gene_id[which(goids$go_accession == GOID)], collapse = ' ')
+  }
+  # Merge the ids to the rest of the table and return the new dataframe
+  GowindaTable<-data.frame(uniqueGOtable, geneids)
+  return(GowindaTable)
+}
+
+# Call the function on the data frames we have already created
+GOWTable<-GOIDGeneLookup(GOAssoc, goids)
+# Now we have our table in the right format for Gowinda
+head(GOWTable[,1:2])
+# Just need to save it as a file as follows:
+write.table(x = GOWTable, file = "GowindaGeneSetFile.txt", quote = F, sep = "\t", col.names = F, row.names = F)
+
+```
+
+The outputted `GowindaGeneSetFile.txt` can now be passed to Gowinda with GO terms from the latest BioMart information.
+
+Back to homepage: <https://mshadbolt.github.io/Ae_aegypti-toolset/>
