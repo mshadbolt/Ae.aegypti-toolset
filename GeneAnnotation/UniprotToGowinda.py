@@ -12,12 +12,17 @@ DESCRIPTION:
 Program to download and create the 'geneset' file for input into Gowinda for the species Aedes aegypti from the uniprot
 database. The program first downloads the GO terms for all Aedes aegypti genes directly from Uniprot. It then parses
 this file to create a dictionary of GO terms with associated genes. Finally it downloads the obo file from the gene
-ontology consortium website, outputting a tab-delimited textfile called 'UniprotGOassocGowinda.txt' in the format required by Gowinda i.e.:
+ontology consortium website, outputting a tab-delimited textfile in the format required by Gowinda i.e.:
 <GO Accession>\t<underscore separated GO name>\t<space separated string of associated genes>.
 
-Notes: 
+If you already have a obo file and a file containing a tab delimited file of geneids and GO terms, they can optionally
+be supplied on the commandline as follows:
+--gene_file uniprot-organism.tab.gz
+--obo_file go.obo
+
+Notes:
 * User may need to install the wget module if they don't already have it installed: pip install wget (https://pypi.python.org/pypi/wget)
-* Could be easily adapted for any other organism in the uniprot database by modifying the uniprot query url, see: 
+* Could be easily adapted for any other organism in the uniprot database by modifying the uniprot query url, see:
 http://www.uniprot.org/help/programmatic_access
 
 Author: Marion Shadbolt, apart from the first two methods for obo file parsing (citation information below).
@@ -76,20 +81,77 @@ def parseGOOBO(filename):
         if currentGOTerm is not None:
             yield processGOTerm(currentGOTerm)
 
-print("Downloading uniprot geneids to GO terms...")
-try:
-    urlquery = "http://www.uniprot.org/uniprot/?query=organism:7159&format=tab&compress=yes&columns=entry%20name,database(vectorbase),go-id"
-    filename = wget.download(urlquery)
-    print(str(filename) + " downloaded successfully.")
-except IOError as e:
-    print("Could not access file, check internet connection and/or url")
-    print(e)
-    sys.exit(0)
 
-lines = []
-with gzip.open(filename, "rb") as f:
-    for line in f.readlines():
-        lines.append(line.decode('UTF-8'))
+''' Start Program '''
+
+clinput = sys.argv
+
+if len(clinput) > 1:
+    try:
+        if "--gene_file" in clinput:
+            print("Parsing given geneset file...")
+            flagindex = clinput.index("--gene_file")
+            fileinputpath = clinput[flagindex + 1]
+            try:
+                lines = []
+                extension = fileinputpath.split(".")[-1]
+                if extension == "gz":
+                    with gzip.open(fileinputpath, "rb") as f:
+                        for line in f.readlines():
+                            lines.append(line.decode('UTF-8'))
+                else:  # assumes regular plain text file
+                    genesetfile = open(fileinputpath, "r")
+                    for line in genesetfile.readlines():
+                        lines.append(line)
+
+            except IOError as e:
+                print("Could not read geneset file, check path or remove --gene_file to download from UniProt")
+                print(e)
+                sys.exit(0)
+        else:
+            print("Downloading uniprot geneids to GO terms...")
+            try:
+                urlquery = "http://www.uniprot.org/uniprot/?query=organism:7159&format=tab&compress=yes&columns=entry%20name,database(vectorbase),go-id"
+                fileinputpath = wget.download(urlquery)
+                print(str(fileinputpath) + " downloaded successfully.")
+            except IOError as e:
+                print("Could not access file, check internet connection and/or url")
+                print(e)
+                sys.exit(0)
+            lines = []
+            with gzip.open(fileinputpath, "rb") as f:
+                for line in f.readlines():
+                    lines.append(line.decode('UTF-8'))
+
+        if "--obo_file" in clinput:
+            print("Parsing given obo file...")
+            flagindex = clinput.index("--obo_file")
+            fileinputpath = clinput[flagindex + 1]
+        else:
+            print("Downloading GO term names")
+            obourl = "http://purl.obolibrary.org/obo/go.obo"
+            fileinputpath = wget.download(obourl)
+            print(str(fileinputpath) + " downloaded successfully.")
+        GODict = {}
+        try:
+            print("Parsing definitions file...")
+            for goTerm in parseGOOBO(fileinputpath):
+                GODict[goTerm["id"]] = goTerm["name"]
+                if "alt_id" in goTerm.keys():
+                    if type(goTerm["alt_id"]) is list:
+                        for item in goTerm["alt_id"]:
+                            GODict[item] = goTerm["name"]
+                    else:
+                        GODict[goTerm["alt_id"]] = goTerm["name"]
+
+        except IOError as e:
+            print("Could not access file, check file input, internet connection and/or url")
+            print(e)
+            sys.exit(0)
+    except IndexError:
+        print("Problem with command line input, check usage or remove flags for default behaviour.")
+        sys.exit(0)
+
 
 GenetoGOdict = {}
 print("Parsing file and storing in dictionary...")
@@ -113,28 +175,6 @@ for item in GOids:
     for gene in GenetoGOdict.keys():
         if item in GenetoGOdict[gene]:
             GOtoGenedict[item].append(gene)
-
-print("Downloading gene ontology definitions...")
-try:
-    obourl = "http://purl.obolibrary.org/obo/go.obo"
-    obofile = wget.download(obourl)
-    print(str(obofile) + " downloaded successfully.")
-except IOError as e:
-    print("Could not access file, check internet connection and/or url")
-    print(e)
-    sys.exit(0)
-
-GODict = {}
-
-print("Parsing definitions file...")
-for goTerm in parseGOOBO(obofile):
-    GODict[goTerm["id"]] = goTerm["name"]
-    if "alt_id" in goTerm.keys():
-        if type(goTerm["alt_id"]) is list:
-            for item in goTerm["alt_id"]:
-                GODict[item] = goTerm["name"]
-        else:
-            GODict[goTerm["alt_id"]] = goTerm["name"]
 
 print("Inserting GO names into dictionary...")
 
