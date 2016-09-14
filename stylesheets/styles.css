@@ -88,6 +88,11 @@ h3, h4, h5, h6 {
   color:#494949;
 }
 
+h4 {
+    font-size: 12px;
+    line-height: 1;
+}
+
 a {
   color:#C40E04;
   text-decoration:none;
