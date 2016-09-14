@@ -126,9 +126,15 @@ blockquote {
 }
 
 code, pre {
-  font-family:Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal, Consolas, Liberation Mono, DejaVu Sans Mono, Courier New, monospace;
-  color:#333;
-  font-size:12px;
+  /*font-family:Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal, Consolas, Liberation Mono, DejaVu Sans Mono, Courier New, monospace;*/
+  font-family: Terminal, monospace;
+  color:#fff;
+  line-height: 1.5;
+  padding:1px;
+  background-color: #333;
+  border-radius: 5px;
+  border: 1px solid darkgray;
+  font-size:14px;
 }
 
 pre {

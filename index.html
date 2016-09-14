@@ -45,36 +45,43 @@
             <h2>Commandline scripts</h2>
             <div class="accordion">
                 <div class="accordion-section">
-                    <a class="accordion-section-title" href="#accordion-1">AaeL1/2/3>Juneja VCF Converter</a>
+                    <a class="accordion-section-title" href="#accordion-1">AaegL1/2/3>Juneja VCF Converter</a>
 
                     <div id="accordion-1" class="accordion-section-content">
-                        <p>Description: Converts vcf file aligned to AaeL1/2/3 (superconts) into mapped positions according to <a href="http://dx.doi.org/10.1371/journal.pntd.0002652" target="_blank">Juneja et al. 2014</a></p>
-                      <p>Usage: </p>
-                      <p>Input: </p>
-                      <p>Output: </p>
-                      <p>Example: </p>
-                      <p>Download: <a href="">vcfconverter.py</a></p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Description: </span>Converts vcf file aligned to AaegL1/2/3 (superconts) into mapped positions on chromosomes according to <a href="http://dx.doi.org/10.1371/journal.pntd.0002652" target="_blank">Juneja et al. 2014</a>. Supercontigs that were not able to be mapped are left as is. Positions are then sorted by chromosome so chr1-3 come first, followed by unmapped chromosomes.</p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Usage: </span><code>python variantpositions.vcf</code></p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Input:</span> Standard <a href="https://en.wikipedia.org/wiki/Variant_Call_Format">VCF file</a> where header rows commence with ## and the first two columns are CHROM and POS based on positions aligned to AaegL1-3. Also required is the supplemental file outlining mappings between supercontigs and chromosomes called <code>JunejaGeneticAssembly.csv</code></p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Output: </span>Copy of the given VCF file with prefix <code>juneja.</code></p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Download: </span><a href="https://github.com/mshadbolt/Ae_aegypti-toolset/raw/master/AeagyptVCFConverter.py" download>AaegyptVCFConverter.py</a> & <a href="https://github.com/mshadbolt/Ae_aegypti-toolset/raw/master/JunejaGeneticAssembly.csv" download>JunejaGeneticAssembly.csv</a> </p>
                     </div><!--end .accordion-section-content-->
                 </div><!--end .accordion-section-->
                 <div class="accordion-section">
                     <a class="accordion-section-title" href="#accordion-2">Uniprot>Gowinda</a>
 
                     <div id="accordion-2" class="accordion-section-content">
-                        <p>Description: Downloads latest Ae. aegypti associated GO terms from Uniprot using REST API and creates input to the program <a href="https://sourceforge.net/p/gowinda/wiki/Main/">Gowinda</a> (<a href="https://doi.org 10.1093/bioinformatics/bts315">publication</a>)</p>
-                        <p>Usage: </p>
-                        <p>Depends: </p>
-                        <p>Input: </p>
-                        <p>Output: </p>
-                        <p>Example: </p>
-                        <p>Download: <a href="">Uniprot2Gowinda.py</a></p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Description:</span> Downloads latest <span style="font-style: italic">Ae. aegypti</span> associated <a href="http://geneontology.org/" target="_blank">Gene Ontology</a> terms from UniProt using their <a href="http://www.uniprot.org/help/programmatic_access" target="_blank"></a>REST API and creates input to the program <a href="https://sourceforge.net/p/gowinda/wiki/Main/">Gowinda</a> (<a href="https://doi.org 10.1093/bioinformatics/bts315">publication</a>)</p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Usage:</span> <code>python UniprotToGowinda.py</code></p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Depends:</span> Requires the python module <code>wget</code> to be installed. Should be as simple as using the command: <code>pip install wget</code> in the terminal if you don't have it.</p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Input:</span> Optional to supply already downloaded files from Uniprot and GO consortium using the flags: </p>
+                        <p><code>--gene_file [uniprotoutput.tab.gz]</code></p>
+                        <p><code>--obo_file [go.obo] </code></p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Output:</span> Tab-delimited text file entitled <code>UniprotGOassocGowinda.txt</code> ready for input into Gowinda, eg:               <blockquote>
+                                GO:0007005  mitochondrion_organization	AAEL007089 AAEL010831 AAEL001853 AAEL003829 AAEL011606 <br/>
+                                GO:0006228	UTP_biosynthetic_process	AAEL003030 AAEL004107 AAEL011098 AAEL012359
+                            </blockquote>  
+                        </p>
+                        <p>Download: <a href="https://github.com/mshadbolt/Ae_aegypti-toolset/raw/master/UniprotToGowinda.py" download>UniprotToGowinda.py</a></p>
                     </div><!--end .accordion-section-content-->
                 </div><!--end .accordion-section-->
             </div><!--end .accordion-->
           
+            <br/>
+            <br/>
+            
           <h2>Web resources</h2>
             <ul>
                 <li>
-                    <a href="http://www.uniprot.org/uniprot/?query=aedes%20aegypti&fil=organism%3A%22Aedes+aegypti+%28Yellowfever+mosquito%29+%28Culex+aegypti%29+%5B7159%5D%22&sort=score">UniProt entries for <span style="font-style: italic">Ae. aegypti</span>"</a>
+                    <a href="http://www.uniprot.org/uniprot/?query=aedes%20aegypti&fil=organism%3A%22Aedes+aegypti+%28Yellowfever+mosquito%29+%28Culex+aegypti%29+%5B7159%5D%22&sort=score">UniProt entries for <span style="font-style: italic">Ae. aegypti</span></a>
                 </li>
                 <li>
                     <a href="https://www.vectorbase.org/downloads?field_organism_taxonomy_tid=372&field_download_file_type_tid=All&field_download_file_format_tid=All&field_status_value=Current">VectorBase data downloads for <span style="font-style: italic">Ae. aegypti</span></a>
