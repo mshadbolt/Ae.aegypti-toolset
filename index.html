@@ -45,11 +45,7 @@
 </ul>
 
 <h2>Commandline scripts</h2>
-<ul>
-  <li><a href="vcfconverter.html"><code>VCF converter</code></a> - c</li>
-  <li><a href="uniprottoGowinda.html">Uniprot GO terms to Gowinda file input</a> - downloads GO terms from uniprot and creates input to the program Gowinda</li>
-</ul>
-
+          
 <div id="accordion">
   <h4>Juneja VCF converter</h4>
   <div>
@@ -86,6 +82,14 @@ $( "#accordion" ).accordion();
 $( ".selector" ).accordion({
     collapsible: true
 })
+var collapsible = $( ".selector" ).accordion( "option", "collapsible" );
+ 
+$( ".selector" ).accordion( "option", "collapsible", true );
+
+var active = $( ".selector").accordion( "option", "active" );
+
+$( " .selector" ).accordion( "option", "active", false);
+    
 </script>
 
 <!--
