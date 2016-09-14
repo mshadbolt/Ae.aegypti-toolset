@@ -51,7 +51,7 @@
 </ul>
 
 <div id="accordion">
-  <h3>Juneja VCF converter</h3>
+  <h4>Juneja VCF converter</h4>
   <div>
     <p>Description: Converts vcf file aligned to AaeL1/2/3 (superconts) into mapped positions according to <a href="http://dx.doi.org/10.1371/journal.pntd.0002652" target="_blank">Juneja et al. 2014</a></p>
     <p>Usage: </p>
@@ -60,7 +60,7 @@
     <p>Example: </p>
     <p>Download: <a href="">vcfconverter.py</a></p>
   </div>
-  <h3>Uniprot to Gowinda</h3>
+  <h4>Uniprot to Gowinda</h4>
   <div>
     <p>Description: Downloads latest Ae. aegypti associated GO terms from Uniprot using REST API and creates input to the program <a href="https://sourceforge.net/p/gowinda/wiki/Main/">Gowinda</a> (<a href="https://doi.org 10.1093/bioinformatics/bts315">publication</a>)</p>
     <p>Usage: </p>
@@ -83,6 +83,9 @@
  
 <script>
 $( "#accordion" ).accordion();
+$( ".selector" ).accordion({
+    collapsible: true
+})
 </script>
 
 <!--
