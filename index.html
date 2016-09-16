@@ -59,21 +59,21 @@
                     </div><!--end .accordion-section-content-->
                 </div><!--end .accordion-section-->
                 <div class="accordion-section">
-                    <a class="accordion-section-title" href="#accordion-2">UniProt>Gowinda</a>
+                    <a class="accordion-section-title" href="#accordion-2">UniProt&BioMart>Gowinda</a>
 
                     <div id="accordion-2" class="accordion-section-content">
-                        <p><span style="color: #1a1a1a; font-weight: bold">Description:</span> Downloads latest <span style="font-style: italic">Ae. aegypti</span> associated <a href="http://geneontology.org/" target="_blank">Gene Ontology</a> terms from UniProt using their <a href="http://www.uniprot.org/help/programmatic_access" target="_blank"></a>REST API and creates input to the program <a href="https://sourceforge.net/p/gowinda/wiki/Main/">Gowinda</a> (<a href="https://doi.org 10.1093/bioinformatics/bts315">publication</a>)</p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Description:</span> Downloads latest <span style="font-style: italic">Ae. aegypti</span> associated <a href="http://geneontology.org/" target="_blank">Gene Ontology</a> terms from UniProt & BioMart using their REST APIs and creates input to the program <a href="https://sourceforge.net/p/gowinda/wiki/Main/">Gowinda</a> (<a href="https://doi.org 10.1093/bioinformatics/bts315">publication</a>)</p>
                         <p><span style="color: #1a1a1a; font-weight: bold">Usage:</span> <code>python UniprotToGowinda.py</code></p>
                         <p><span style="color: #1a1a1a; font-weight: bold">Depends:</span> Requires the python module <code>wget</code> to be installed. Should be as simple as using the command: <code>pip install wget</code> in the terminal if you don't have it.</p>
                         <p><span style="color: #1a1a1a; font-weight: bold">Input:</span> Optional to supply already downloaded files from Uniprot and GO consortium using the flags: </p>
                         <p><code>--gene_file [uniprotoutput.tab.gz]</code></p>
                         <p><code>--obo_file [go.obo] </code></p>
-                        <p><span style="color: #1a1a1a; font-weight: bold">Output:</span> Tab-delimited text file entitled <code>UniprotGOassocGowinda.txt</code> ready for input into Gowinda, eg:               <blockquote>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Output:</span> Tab-delimited text file entitled <code>UniprotBioMartGOassocGowinda.txt</code> ready for input into Gowinda, eg:               <blockquote>
                                 GO:0007005  mitochondrion_organization	AAEL007089 AAEL010831 AAEL001853 AAEL003829 AAEL011606 <br/>
                                 GO:0006228	UTP_biosynthetic_process	AAEL003030 AAEL004107 AAEL011098 AAEL012359
                             </blockquote>  
                         </p>
-                        <p>Download: <a href="https://github.com/mshadbolt/Ae_aegypti-toolset/raw/master/UniprotToGowinda.py" download>UniprotToGowinda.py</a></p>
+                        <p>Download: <a href="https://github.com/mshadbolt/Ae_aegypti-toolset/raw/master/UniprotBioMartToGowinda.py" download>UniprotToGowinda.py</a></p>
                     </div><!--end .accordion-section-content-->
                 </div><!--end .accordion-section-->
             </div><!--end .accordion-->
