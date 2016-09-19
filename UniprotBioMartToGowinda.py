@@ -165,6 +165,7 @@ for line in uniprotData:
         print(e)
         continue
 
+print("Number of Genes from UniProt " + str(len(GenetoGOdict)))
 print("Parsing BioMart file and storing in dictionary...")
 biomartlines = biomartfile.text.split("\n")
 for line in biomartlines:
@@ -179,6 +180,7 @@ for line in biomartlines:
         else:
             GenetoGOdict[splitline[0]] = splitline[1:]
 
+print("Total Genes in dictionary " + str(len(GenetoGOdict)))
 # get unique list of all GO IDs
 GOids = list(GenetoGOdict.values())
 GOids = set(itertools.chain(*GOids))
@@ -186,10 +188,10 @@ GOids = set(itertools.chain(*GOids))
 print("Transforming dictionary, one GO term to many genes...")
 GOtoGenedict = {}
 for item in GOids:
-    GOtoGenedict[item] = []
+    GOtoGenedict[item] = set()
     for gene in GenetoGOdict.keys():
         if item in GenetoGOdict[gene]:
-            GOtoGenedict[item].append(gene)
+            GOtoGenedict[item].add(gene)
 
 print("Inserting GO names into dictionary...")
 
@@ -225,21 +227,45 @@ try:
                     GODict[item] = goTerm["name"]
             else:
                 GODict[goTerm["alt_id"]] = goTerm["name"]
+        if "is_a" in goTerm.keys() and goTerm["id"] in GOtoGenedict:
+            if type(goTerm["is_a"]) is list:
+                for item in goTerm["is_a"]:
+                    try:
+                        GOtoGenedict[item.split()[0]].union(GOtoGenedict[goTerm["id"]])
+                    except KeyError:
+                        GOtoGenedict[item.split()[0]] = GOtoGenedict[goTerm["id"]]
+            else:
+                try:
+                    GOtoGenedict[goTerm["is_a"].split()[0]].union(GOtoGenedict[goTerm["id"]])
+                except KeyError:
+                    GOtoGenedict[goTerm["is_a"].split()[0]] = GOtoGenedict[goTerm["id"]]
+        if "part_of" in goTerm.keys() and goTerm["id"] in GOtoGenedict:
+            if type(goTerm["part_of"]) is list:
+                for item in goTerm["part_of"]:
+                    if goTerm["part_of"] in GOtoGenedict:
+                        try:
+                            GOtoGenedict[item.split()[0]].union(GOtoGenedict[goTerm["id"]])
+                        except KeyError:
+                            GOtoGenedict[item.split()[0]] = GOtoGenedict[goTerm["id"]]
+            else:
+                try:
+                    GOtoGenedict[goTerm["part_a"].split()[0]].union(GOtoGenedict[goTerm["id"]])
+                except KeyError:
+                    GOtoGenedict[goTerm["part_a"].split()[0]] = GOtoGenedict[goTerm["id"]]
 except IOError as e:
     print("Could not access file, check file input, internet connection and/or url")
     print(e)
     sys.exit(0)
 
-for item in GOtoGenedict.keys():
-    GOname = GODict[item]
-    # GOname = GOname.replace(' ', '_')
-    GOtoGenedict[item].insert(0, GOname)
-
 print("Writing go terms to file...")
 GowindaOutput = open("UniprotBioMartGOassocGowinda.txt", "w")
-for k, v in GOtoGenedict.items():
-    linetoprint = k + "\t" + v[0] + "\t" + " ".join(v[1:]) + "\n"
+for k,v in GOtoGenedict.items():
+    GOname = GODict[k]
+    linetoprint = k + "\t" + GOname + "\t" + " ".join(v) + "\n"
+    # GOname = GOname.replace(' ', '_')
     GowindaOutput.write(linetoprint)
+
+print("Total GO terms: " + str(len(GOtoGenedict)))
 print("done.")
 
 sys.exit(0)
