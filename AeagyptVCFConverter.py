@@ -51,7 +51,7 @@ class Converter:
             if len(self.superContDict[sc]) > 1:
                 for i in range(len(self.superContDict[sc])):
                     if bp >= int(assemblyInfo[i][2]) and bp <= int(assemblyInfo[i][3]):
-                        chrombp = bp + int(assemblyInfo[i][5]) - int(assemblyInfo[i][4])
+                        chrombp = bp - int(assemblyInfo[i][2] + int(assemblyInfo[i][5]) - int(assemblyInfo[i][4])
                         chrom = assemblyInfo[i][0]
                         return ((chrom, chrombp))
             elif int(assemblyInfo[0][3]) >= bp >= int(assemblyInfo[0][2]):
