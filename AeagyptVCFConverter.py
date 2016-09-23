@@ -21,8 +21,10 @@ Last updated: 23rd September 2016
 email: marion.shadbolt@gmail.com
 '''
 
-# Class to build and store contig information from the Juneja 2014 et al. Ae. aegypti assembly
 class Converter:
+    '''
+    Class to build and store contig information from the Juneja 2014 et al. Ae. aegypti assembly
+    '''
     def __init__(self):
         self.superContDict = {}
 
@@ -43,15 +45,18 @@ class Converter:
 
         print("done.")
 
-    # Method to convert supercont and pos information to Chromosome and pos information
-    # If location not found in the assembly, original information is returned
+    
     def convert(self, sc, bp):
+        '''
+        Method to convert supercont and pos information to Chromosome and pos information
+        If location not found in the assembly, original information is returned
+        '''
         try:
             assemblyInfo = self.superContDict[sc]
             if len(self.superContDict[sc]) > 1:
                 for i in range(len(self.superContDict[sc])):
                     if bp >= int(assemblyInfo[i][2]) and bp <= int(assemblyInfo[i][3]):
-                        chrombp = bp - int(assemblyInfo[i][2] + int(assemblyInfo[i][5]) - int(assemblyInfo[i][4])
+                        chrombp = bp - int(assemblyInfo[i][2]) + int(assemblyInfo[i][5]) - int(assemblyInfo[i][4])
                         chrom = assemblyInfo[i][0]
                         return ((chrom, chrombp))
             elif int(assemblyInfo[0][3]) >= bp >= int(assemblyInfo[0][2]):
