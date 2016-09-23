@@ -17,7 +17,7 @@ Expected filename: "JunejaGeneticAssembly.csv"
 This file is from Juneja et al. 2014 Table S2 http://dx.doi.org/10.1371/journal.pntd.0002652
 
 Author: Marion Shadbolt
-Last updated: 3rd September 2016
+Last updated: 23rd September 2016
 email: marion.shadbolt@gmail.com
 '''
 
