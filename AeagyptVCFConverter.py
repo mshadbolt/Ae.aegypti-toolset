@@ -18,7 +18,7 @@ This file is from Juneja et al. 2014 Table S2 http://dx.doi.org/10.1371/journal.
 
 Author: Marion Shadbolt
 Last updated: 23rd September 2016
-email: marion.shadbolt@gmail.com
+Report any issues on github: https://github.com/mshadbolt/Ae_aegypti-toolset
 '''
 
 class Converter:
