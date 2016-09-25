@@ -9,10 +9,10 @@ Website: https://mshadbolt.github.io/Ae_aegypti-toolset/
 * Python script to download Uniprot GO annotations and create file for input to Gowinda, see UniprotToGowinda.py
 
 
-## On the wishlist:
+<!-- ## On the wishlist:
 
 * In silico genomic sexing based on Fontaine et al. (2016) http://dx.doi.org/10.1101/060061
 * Convert PLINK output files mapped to supercontigs to mapping to Juneja chromosomes - Then potentially use as input to SNeP -> https://sourceforge.net/projects/snepnetrends/?source=navbar http://dx.doi.org/10.3389/fgene.2015.00109
 * R mapping superconts to Juneja chromosomes script
 * R LD visualisation Shiny app
-* Updated trimming and stacks scripts (?)
+* Updated trimming and stacks scripts (?) -->
