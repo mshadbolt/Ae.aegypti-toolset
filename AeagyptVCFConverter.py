@@ -17,7 +17,7 @@ Expected filename: "JunejaGeneticAssembly.csv"
 This file is from Juneja et al. 2014 Table S2 http://dx.doi.org/10.1371/journal.pntd.0002652
 
 Author: Marion Shadbolt
-Last updated: 23rd September 2016
+Last updated: 26th September 2016
 Report any issues on github: https://github.com/mshadbolt/Ae_aegypti-toolset
 '''
 
@@ -54,19 +54,23 @@ class Converter:
         try:
             assemblyInfo = self.superContDict[sc]
             if len(self.superContDict[sc]) > 1:
+                # if the supercontig is misassembled, iterate over each fragment to find correct position
                 for i in range(len(self.superContDict[sc])):
                     if bp >= int(assemblyInfo[i][2]) and bp <= int(assemblyInfo[i][3]):
                         chrombp = bp - int(assemblyInfo[i][2]) + int(assemblyInfo[i][5]) - int(assemblyInfo[i][4])
                         chrom = assemblyInfo[i][0]
                         return ((chrom, chrombp))
             elif int(assemblyInfo[0][3]) >= bp >= int(assemblyInfo[0][2]):
+                # else if the position is within the assembled section of the contig, return chromosome and base position
                 chrombp = bp + int(assemblyInfo[0][5]) - int(assemblyInfo[0][4])
                 chrom = assemblyInfo[0][0]
                 return ((chrom, chrombp))
             else:
+                # else the position is not part of the assembly so return original information
                 return ((sc, bp))
             return ((sc, bp))
         except KeyError:
+            # if contig not found in assembly, return original information
             return ((sc, bp))
 
 
@@ -78,19 +82,22 @@ try:
     # Create the converter object and read assembly file
     PosConverter = Converter()
     PosConverter.readContigs()
+    
     # Check appropriate input provided
     inputfilename = sys.argv[1]
     filenamecheck = inputfilename.split(".")
     if filenamecheck[len(filenamecheck) - 1].lower() != "vcf":
         print("Wrong input file, please use a .vcf file. Exiting.")
         sys.exit(0)
+    
+    # Open inputfile, read each line from input and store converted positions in list 
     convertedfilename = "juneja." + inputfilename
     print("Converting positions and writing to " + convertedfilename)
-    # Open inputfile, read each line and write to output file with converted positions
     inputVcf = open(inputfilename, "r")
     outputVcf = open(convertedfilename, "w")
     linesToWrite = []
     for line in inputVcf:
+        # write header lines to output file
         if line[0] is "#":
             outputVcf.write(line)
         else:
@@ -100,14 +107,19 @@ try:
             linelist[1] = converted[1]
             linesToWrite.append(linelist)
     inputVcf.close()
+    
+    # sort positions by chromosome and base position
     linesToWrite.sort()
+    
+    # write lines to output file
     for item in linesToWrite:
         item[1] = str(item[1])
         outputVcf.write("\t".join(item))
     outputVcf.close()
     print("done.")
+
 except IOError as e:
-    print("Problem with reading input files, exiting see below: ")
+    print("Problem with reading input files, exiting see below:")
     print(e)
     sys.exit(1)
 sys.exit(0)
