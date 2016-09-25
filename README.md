@@ -1,7 +1,7 @@
 # Ae.aegypti-toolset
 
 A set of scripts to help with Ae.aegypti genomic analyses. 
-Website: https://mshadbolt.github.io/Ae_aegypti-toolset/
+Further instructions available via repo website: https://mshadbolt.github.io/Ae_aegypti-toolset/
 
 ## Completed:
 * VCF converter from superconts to Juneja assembly physical positions, see AeagyptVCFConverter.py
