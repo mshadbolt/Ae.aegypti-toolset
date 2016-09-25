@@ -29,6 +29,7 @@ http://www.uniprot.org/help/programmatic_access
 
 Author: Marion Shadbolt, apart from the first two methods for obo file parsing (citation information below).
 Last updated: 16/09/2016
+Report any issues on github https://github.com/mshadbolt/Ae_aegypti-toolset
 """
 
 """
