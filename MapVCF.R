@@ -1,4 +1,4 @@
-#create separate chroms vcf files
+
 MapVCFLoci<-function(VCFfilepath)
 {
   if(!require(VariantAnnotation)){
