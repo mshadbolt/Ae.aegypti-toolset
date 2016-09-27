@@ -84,6 +84,50 @@
             <br/>
             <br/>
             
+          <h2>R scripts</h2>
+          <div class="accordion">
+                <div class="accordion-section">
+                    <a class="accordion-section-title" href="#accordion-3">AaegL1/2/3>Juneja VCF Converter</a>
+                    <div id="accordion-3" class="accordion-section-content">
+                        <p><span style="color: #1a1a1a; font-weight: bold">Description: </span>Converts vcf file aligned to AaegL1/2/3 (superconts) into mapped positions on chromosomes according to <a href="http://dx.doi.org/10.1371/journal.pntd.0002652" target="_blank">Juneja et al. 2014</a>. Supercontigs not mapped are given NAs.</p>
+                        <p>Depends: 
+                            <ul>
+                                <li>Requires the bioconductor package <code>VariantAnnotation</code> which is installed if not already installed.</li>
+                                <li>Requires the supplemental file outlining mappings between supercontigs and chromosomes called JunejaGeneticAssemblyR.csv in the working directory.</li>
+                            </ul>
+                        </p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Usage: </span> 
+                          <br/>Download script to a location of your choice, then run the commands:
+                          <br/><code>source("path/to/script/file/MapVCF.R")</code>
+                          <br/><code>mapped.df<-MapVCFLoci("path/to/vcf/file.vcf") </code></p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Input:</span> Standard <a href="https://en.wikipedia.org/wiki/Variant_Call_Format">VCF file</a> where header rows commence with ## and the first two columns are CHROM and POS based on positions aligned to AaegL1-3. Also required is the supplemental file outlining mappings between supercontigs and chromosomes called <code>JunejaGeneticAssembly.csv</code></p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Output: </span>dataframe with the columns: CHROM, POS, ID, supercontigJun, </p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Download: </span><a href="https://github.com/mshadbolt/Ae_aegypti-toolset/raw/master/MapVCF.R" download>MapVCF.R</a> & <a href="https://github.com/mshadbolt/Ae_aegypti-toolset/raw/master/JunejaGeneticAssemblyR.csv" download>JunejaGeneticAssemblyR.csv</a> </p>
+                    </div><!--end .accordion-section-content-->
+                </div><!--end .accordion-section-->
+                <div class="accordion-section">
+                    <a class="accordion-section-title" href="#accordion-4">AaegL1/2/3>Juneja data frame Converter</a>
+                    <div id="accordion-4" class="accordion-section-content">
+                        <p><span style="color: #1a1a1a; font-weight: bold">Description: </span>Converts vcf file aligned to AaegL1/2/3 (superconts) into mapped positions on chromosomes according to <a href="http://dx.doi.org/10.1371/journal.pntd.0002652" target="_blank">Juneja et al. 2014</a>. Supercontigs not mapped are given NAs.</p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Usage: </span> 
+                          <br/>Download script to a location of your choice, then run the commands:
+                          <br/><code>source("path/to/script/file/MapFromDF.R")</code>
+                          <br/><code>mapped.df<-MapDF(dataframe) </code></p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Depends: </span>
+                            <ul>
+                                <li>Requires the supplemental file outlining mappings between supercontigs and chromosomes called JunejaGeneticAssemblyR.csv in the working directory.</li>
+                            </ul>
+                        </p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Input:</span> Dataframe with a minimum of two columns called "CHROM" and "POS".</p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Output:</span> Original dataframe with appended columns: JunChr, JunBP, JunSC, JuncM.</p>
+                        <p><span style="color: #1a1a1a; font-weight: bold">Download: </span><a href="https://github.com/mshadbolt/Ae_aegypti-toolset/raw/master/MapFromDF.R" download>MapFromDF.R</a> & <a href="https://github.com/mshadbolt/Ae_aegypti-toolset/raw/master/JunejaGeneticAssemblyR.csv" download>JunejaGeneticAssemblyR.csv</a> </p>
+                    </div><!--end .accordion-section-content-->
+                </div><!--end .accordion-section-->
+            </div><!--end .accordion-->    
+                    
+            <br/>
+            <br/>
+      
           <h2>Web resources</h2>
             <ul>
                 <li>
