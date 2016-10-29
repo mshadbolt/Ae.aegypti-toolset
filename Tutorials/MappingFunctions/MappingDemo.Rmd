@@ -1,0 +1,108 @@
+---
+title: "Demonstration of R Juneja mapping scripts"
+date: "`r Sys.Date()`"
+output:
+  rmdformats::readthedown:
+    highlight: kate
+---
+
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+library(rmdformats)
+
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=FALSE,
+	             cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE)
+opts_knit$set(width=100)
+```
+
+First things first, load the functions into your environment.
+
+```{r echo=T}
+# Load the mapping functions 
+source("MappingFunctions.R")
+ls()
+```
+
+There should now be three functions in your environment, MapDF, MapDF_FST and MapVCFLoci. Each one uses the same algorithm to map a set of markers that have been mapped to the current Ae. aegypti genome (AaegL1/2/3) and converts them into Juneja (http://journals.plos.org/plosntds/article?id=10.1371/journal.pntd.0002652) assembly physically mapped markers where possible. You will also need to make sure the file `JunejaGeneticAssembly.csv` is in your working directory.
+
+# Mapping from a VCF file
+If you have a VCF files with markers mapped to the AaegL genome, you just need to provide the path to where the VCF is and it will return a dataframe with Juneja mapped markers. This function requires you have the package `VariantAnnotation` from Bioconductor installed. It *should* install this automatically but do let me know if it doesn't work. Let's use the VCF file published in Gordana's Rio paper (http://onlinelibrary.wiley.com/doi/10.1111/eva.12301/full) as an example 
+```{r echo=T}
+BrazilMappedLoci<-MapVCFLoci("Rasic2015Rio.vcf")
+head(BrazilMappedLoci)
+```
+Too easy. 
+
+# Mapping from a data frame
+
+The next function is handy if you have a table type output that has the supercontig identifiers and the basepair positions within them. I created an output like this by using the following command with vcftools:
+`vcftools --vcf Rasic2015Rio.vcf --weir-fst-pop TB.txt --weir-fst-pop UR.txt --out TBvsUR`
+```{r echo=T, cache=T}
+TBvsURFST<-read.delim("TBvsUR.weir.fst")
+head(TBvsURFST)
+# I usually rename the last column as it is a bit unwieldy...
+colnames(TBvsURFST)<-c("CHROM", "POS", "FST")
+TBvsURFST<-MapDF(TBvsURFST)
+head(TBvsURFST)
+# To get just the mapped positions
+TBvsURFST<-TBvsURFST[complete.cases(TBvsURFST),]
+```
+Cool so what fun things can we do with the mapped data frame? Well I like making pretty interactive plots with a package called manhattanly.
+```{r echo=T}
+#if you haven't installed it yet uncomment the next line and run it
+#install.packages("manhattanly")
+library(manhattanly)
+library(plotly)
+#Get some pretty colours from RColorBrewer, if you don't have this package
+#install.packages("RColorBrewer")
+library(RColorBrewer)
+colours<-brewer.pal(4, "Dark2")
+
+m<-manhattanr(x=TBvsURFST, chr="JunChr", bp="JunBP", p="FST", logp=FALSE, 
+              annotation1 = "JunSC", annotation2 = "JunBP")
+
+manhattanly(m, genomewideline = F, 
+            col = c(colours[1], colours[4], colours[3]),
+            ylab='FST', ylim=c(-0.05, 1),
+            suggestiveline = mean(TBvsURFST$FST, na.rm=T), 
+            suggestiveline_color = "yellow", title="") %>% 
+  layout(yaxis = list(range = c(-0.06, 1)))
+
+```
+
+# Mapping when you still want to visualise the unassigned contigs
+
+So now you're probably thinking, ok, that's pretty and all but we chucked out >5000 markers, what if I want to see them on my visualisation? That's where the third mapping function comes in. This one creates some false chromosomes so that we can see all of the markers. The function maps to chromosomes 1, 2 and 3 as before, but maps markers mapped to contigs that have been assigned to chromosomes but haven't had their exact locations mapped to chromosomes 4, 5, and 6, and all other markers are assigned to chromosome 7.
+
+```{r echo=T}
+# Let's relaod the dataframe so it doesn't get too messy
+TBvsURFST_UN<-read.delim("TBvsUR.weir.fst")
+colnames(TBvsURFST_UN)<-c("CHROM", "POS", "FST")
+TBvsURFST_UN<-MapDF_FST(TBvsURFST_UN)
+head(TBvsURFST_UN)
+
+m<-manhattanr(x=TBvsURFST_UN, chr="JunChr", bp="JunBP", p="FST", logp=FALSE, 
+              annotation1 = "JunSC", annotation2 = "JunBP")
+
+manhattanly(m, genomewideline = F, 
+            col = c(colours[1], colours[4], colours[3], colours[1], colours[4], colours[3], colours[2]),
+            ylab='FST', labelChr = c(1:3, "U1", "U2", "U3","Unassigned"), ylim=c(-0.05, 1),
+            suggestiveline = mean(TBvsURFST_UN$FST, na.rm=T), 
+            suggestiveline_color = "yellow", title="") %>% 
+  layout(yaxis = list(range = c(-0.06, 1)))
+
+```
+
+If there are a lot of unassigned it can take over the graph a bit but the good thing about interactivity is that you can zoom in and out on areas you're interested in. Static versions of these graphs can be created using the package `qqman`.
+
+Hopefully these functions will make your life easier when trying to investigate physically mapped *Ae. aegypti* supercontigs on the Juneja 2014 assembly.
+
+--

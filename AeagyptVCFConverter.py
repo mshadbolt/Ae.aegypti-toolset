@@ -5,7 +5,7 @@ import csv
 
 '''
 Script to convert a vcf file aligned to AaegL1-3 i.e. supercont1.### into chromosomes according to
-Juneja et al. 2014 assembly.
+Juneja et al. 2014 assembly (http://dx.doi.org/10.1371/journal.pntd.0002652).
 Expected input: Standard VCF file where header rows commence with # and the first two columns are:
     CHROM: i.e. supercont1.*
     POS: basepair position of SNP
@@ -17,14 +17,14 @@ Expected filename: "JunejaGeneticAssembly.csv"
 This file is from Juneja et al. 2014 Table S2 http://dx.doi.org/10.1371/journal.pntd.0002652
 
 Author: Marion Shadbolt
-Last updated: 26th September 2016
+Last updated: 28th October 2016
 Report any issues on github: https://github.com/mshadbolt/Ae_aegypti-toolset
 '''
 
 class Converter:
-    '''
-    Class to build and store contig information from the Juneja 2014 et al. Ae. aegypti assembly
-    '''
+    """
+    Class to build and store contig information from the Juneja 2014 et al. Ae. aegypti assembly.
+    """
     def __init__(self):
         self.superContDict = {}
 
@@ -45,12 +45,11 @@ class Converter:
 
         print("done.")
 
-    
     def convert(self, sc, bp):
-        '''
-        Method to convert supercont and pos information to Chromosome and pos information
-        If location not found in the assembly, original information is returned
-        '''
+        """
+        Method to convert supercont and pos information to Chromosome and pos information.
+        If location not found in the assembly, original information is returned.
+        """
         try:
             assemblyInfo = self.superContDict[sc]
             if len(self.superContDict[sc]) > 1:
