@@ -1,0 +1,8 @@
+#population	sample	sex	totalAligned	paired_myo	paired_seq2	paired_seq3	singles_myo	singles_seq2	singles_seq3
+BRwild	BrK02-1	Male	10	4	0	0	1	2	3
+BRwild	BrK26-1	Male	27	18	0	0	3	2	4
+AUwild	Gv10-F-08	Female	0	0	0	0	0	0	0
+AUwild	Gv10-H-10	Female	0	0	0	0	0	0	0
+BRcol2	KD04	Female	0	0	0	0	0	0	0
+BRcol2	KD13	Female	0	0	0	0	0	0	0
+BRcol1	W08	Female	0	0	0	0	0	0	0
