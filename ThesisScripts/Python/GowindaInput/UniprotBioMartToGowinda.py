@@ -28,7 +28,7 @@ Notes:
 http://www.uniprot.org/help/programmatic_access
 
 Author: Marion Shadbolt, apart from the first two methods for obo file parsing (citation information below).
-Last updated: 16/09/2016
+Last updated: 29/10/2016
 Report any issues on github https://github.com/mshadbolt/Ae_aegypti-toolset
 """
 
@@ -129,7 +129,7 @@ else:
             uniprotData.append(line.decode('UTF-8'))
 try:
     print("Downloading BioMart gene and GO ids from VectorBase...")
-    biomartquery = 'http://biomart.vectorbase.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query virtualSchemaName = "vb_mart_1608" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.7" ><Dataset name = "aaegypti_eg_gene" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "go_accession" /></Dataset></Query>'
+    biomartquery = 'http://biomart.vectorbase.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query virtualSchemaName = "vb_mart_1610" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.7" ><Dataset name = "aaegypti_eg_gene" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "go_accession" /></Dataset></Query>'
     biomartfile = requests.get(biomartquery)
     # biomartinput = wget.download(biomartquery)
     print(str("BioMart file downloaded successfully."))
