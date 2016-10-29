@@ -6,7 +6,7 @@ library(gridExtra)
 
 # Load required functions
 source("scripts/Functions.R")
-source("scripts/MapVCF.R") # requires JunejaGenetic assembly csv.
+source("scripts/MappingFunctions.R") # requires JunejaGenetic assembly csv.
 
 ##################
 ## Vietnam Data ##

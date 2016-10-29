@@ -1,22 +1,17 @@
-minmaj<-function(x){
-  if(x > 0.5)
-  {
-    return(1 - x)
-  }
-  else{
-    return(x)
-  }
-}
+source("scripts/Functions.R")
 
 # MAF histograms
-mycols=c("#117733", "#88CCEE", "#332288", "#882255", "#40AA99") 
+mycols=c("#117733", "#88CCEE", "#332288", "#882255", "#40AA99")
+# Load MAF outputs from vcftools
 VietColMaf<-read.table("inputs/vcftoolsoutputs/VietCol27.frq", row.names = NULL)
 VietWiMaf<-read.table("inputs/vcftoolsoutputs/VietWild27.frq", row.names=NULL)
 AusWiViMaf<-read.table("inputs/vcftoolsoutputs/AusWildVi27.frq", row.names=NULL)
 
+# Merge into a single dataframe
 AusVietMaf<-data.frame(AusWiViMaf[,c(1,2,6)], VietColMaf[,6], VietWiMaf[,6])
 colnames(AusVietMaf)<-c("CHROM", "POS", "AusMAF", "VietColMAF", "VietWiMAF")
 
+# Foldover MAFvalues
 AusVietMaf$AusWiFOLD<-sapply(AusVietMaf$AusMAF, minmaj)
 AusVietMaf$VietWiFOLD<-sapply(AusVietMaf$VietWiMAF, minmaj)
 AusVietMaf$VietColFOLD<-sapply(AusVietMaf$VietColMAF, minmaj)

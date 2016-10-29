@@ -1,5 +1,25 @@
-#Calculate distance between markers
+# Calculate rsquared values from a vcf. Returns object LD object from genetics package
+# saves Rsquared and Pvalue matrix to file
+# Requires the packages pegas and genetics
+vcf2Rsquared<-function(vcffilepath, pop, chrom)
+{
+    startTime<-Sys.time()
+    library(pegas)
+    vcf<-read.vcf(vcffilepath)
+    vcf[vcf=="./."]<-NA
+    vcf[vcf=="."]<-NA
+    detach("package:pegas", unload=TRUE)
+    library(genetics)
+    genotypes<-makeGenotypes(vcf)
+    LDgeno<-LD(genotypes)
+    filename<-paste0(pop,chrom,"RsquMatrix.txt")
+    write.table(LDgeno$`R^2`, file = filename)
+    filename<-paste0(pop,chrom,"PvalMatrix.txt")
+    write.table(LDgeno$`P-value`, filename)
+    return(LDgeno)
+}
 
+#Calculate distance between markers
 CalcDist<-function(meltedLDmatrix, MappedTable)
 {
   distances<-1:length(meltedLDmatrix[,1])
@@ -42,28 +62,6 @@ MeanDecayLine<-function(ChromCalcTable, binsize){
   plotting<-data.frame(plottingbins, means)
 }
 
-genepop2LD<-function(genepopfilepath)
-{
-  library(adegenet)
-  library(genetics)
-  genepop<-read.genepop(genepopfilepath)
-  dataframe<-genind2df(genepop, sep = "/")
-  dataframe[dataframe=="00/00"]<-NA
-  dataframe<-dataframe[,2:length(dataframe)]
-  genotypes<-makeGenotypes(dataframe)
-  LDgeno<-LD(genotypes)
-  return(LDgeno)
-}
-
-genind2LD<-function(genindobj)
-{
-  dataframe<-genind2df(genindobj, sep = "/")
-  dataframe[dataframe=="00/00"]<-NA
-  dataframe<-dataframe[,2:length(dataframe)]
-  genotypes<-makeGenotypes(dataframe)
-  LDgeno<-LD(genotypes)
-  return(LDgeno)
-}
 
 LDR2matrix<-function(LDgeno)
 {
@@ -79,6 +77,7 @@ LDPvalmatrix<-function(LDgeno)
   return(PValmatrix)
 }
 
+# Order loci in a matrix
 OrderMatrix<-function(matrix, mapTable)
 {
   library(plyr)
@@ -113,6 +112,7 @@ LDDecayFitSved<-function(distance, LD.data, n)
   return(nonlinear)
 }
 
+# Make predicted decay line
 LDdecayPredict<-function(model, distances, n, popName)
 {
   fpoints<-predict(model, distances)
@@ -125,6 +125,7 @@ LDdecayPredict<-function(model, distances, n, popName)
   ld.df<-ld.df[order(ld.df$distances),]
 }
 
+# Calculate Mean decay line
 MeanDecayLine<-function(ChromCalcTable, binsize){
   ChromCalcTable<-ChromCalcTable[with(ChromCalcTable, order(distances)),]
   maxdist<-max(ChromCalcTable$distances)
@@ -137,4 +138,15 @@ MeanDecayLine<-function(ChromCalcTable, binsize){
   }
   plottingbins<-seq(from=binsize/2, to=maxdist+(binsize/2), by=binsize)
   plotting<-data.frame(plottingbins, means)
+}
+
+# Calculate folded MAF
+minmaj<-function(x){
+    if(x > 0.5)
+    {
+        return(1 - x)
+    }
+    else{
+        return(x)
+    }
 }
