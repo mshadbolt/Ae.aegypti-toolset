@@ -26,6 +26,8 @@ Notes:
 * User may need to install the wget module if they don't already have it installed: pip install wget (https://pypi.python.org/pypi/wget)
 * Could be easily adapted for any other organism in the uniprot database by modifying the uniprot query url, see:
 http://www.uniprot.org/help/programmatic_access
+* To ensure you are accessing the latest VectorBase version visit: https://www.vectorbase.org/releases and update vb_version below.
+    should be a four digit number YYMM, e.g. if latest release is October, 2016, version is 1610
 
 Author: Marion Shadbolt, apart from the first two methods for obo file parsing (citation information below).
 Last updated: 29/10/2016
@@ -45,7 +47,7 @@ __copyright__ = "Copyright 2013 Uli Koehler"
 __license__   = "Apache v2.0"
 
 """
-
+vb_version = 1610
 
 def processGOTerm(goTerm):
     """
@@ -129,7 +131,7 @@ else:
             uniprotData.append(line.decode('UTF-8'))
 try:
     print("Downloading BioMart gene and GO ids from VectorBase...")
-    biomartquery = 'http://biomart.vectorbase.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query virtualSchemaName = "vb_mart_1610" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.7" ><Dataset name = "aaegypti_eg_gene" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "go_accession" /></Dataset></Query>'
+    biomartquery = 'http://biomart.vectorbase.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query virtualSchemaName = "vb_mart_' + str(vb_version) +'" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.7" ><Dataset name = "aaegypti_eg_gene" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "go_accession" /></Dataset></Query>'
     biomartfile = requests.get(biomartquery)
     # biomartinput = wget.download(biomartquery)
     print(str("BioMart file downloaded successfully."))
