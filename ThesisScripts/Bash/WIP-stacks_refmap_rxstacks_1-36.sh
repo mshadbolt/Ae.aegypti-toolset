@@ -1,5 +1,7 @@
 #!/bin/bash
-
+#
+# Still needs full test.
+#
 ### Modified Stacks refmap script ###
 #
 # Originally authored by Rasic, G. and Filipovic, I.
@@ -12,7 +14,7 @@
 ## Additions: ##
 # 1. Allows input of bam files or incorporates zipping and unzipping of bowtie files
 #
-# 2. Incorporates rxstacks correction module expected to reduce genotyping error)
+# 2. Incorporates rxstacks correction module expected to reduce genotyping error
 #
 # Note: Tested to work with Stacks version 1.36, parameters may need editing for later/earlier versions
 # By default does not create or populate database used for web interface as current version (1.19) not compatible with
@@ -41,7 +43,6 @@ _batch_number=1
 _stacks_binaries_path=~/PEARG/$_user/tools/bin
 
 # Stacks rxstacks parameters. By default peforms haplotype pruning and uses upper bounded SNP error model
-# Params can be added/changed below, line 77
 _conf_lim=0.25
 _err_lim=0.15
 _lnl_lim="-10.0"
