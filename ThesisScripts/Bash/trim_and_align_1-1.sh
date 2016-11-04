@@ -17,8 +17,8 @@
 #		- Uses modules: glob, sys, subprocess, collections, os, multiprocessing, time
 #
 ## Additions: ##
-# 1. SAM output from bowtie:
-# Default alignment behaviour is to output a SAM file for each individual then convert
+# 1. BAM output from bowtie:
+# Default alignment behaviour is to output a BAM file for each individual then convert
 # to a sorted, indexed bam file that only contains aligned reads. Previous behaviour can be
 # enabled by toggling _include_sam_output parameter to "no".
 #
