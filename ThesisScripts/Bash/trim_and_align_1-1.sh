@@ -575,15 +575,6 @@ do
 		cd $_bowtied_output_files_path/aligned
 		if [ ! -d "$_current_output_files_path/aligned" ]; then echo $(date +%H:%M:%S) "Creating: "$_current_output_files_path/aligned; mkdir $_current_output_files_path/aligned; fi
 		mv *.{bam,bai} $_current_output_files_path/aligned
-		#for file_to_move in *.{bam,bai};
-		#do
-		#    if [ -r "$file_to_move" ];
-		#    then
-		#        if [ ! -d "$_current_output_files_path/aligned" ]; then echo $(date +%H:%M:%S) "Creating: "$_current_output_files_path/aligned; mkdir $_current_output_files_path/aligned; fi
-        #            
-        #            mv $file_to_move $_current_output_files_path/aligned
-		#    fi
-		#done
 		echo "done."
 		
 		### gzip files if files outputted as bowtie files
