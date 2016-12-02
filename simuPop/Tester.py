@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
 import simuOpt
-simuOpt.setOptions(optimized=False, debug='DBG_WARNING')
+simuOpt.setOptions(optimized=False, debug='DBG_WARNING', gui=False, alleleType='binary')
 
 import simuPOP as sim
 from simuPOP.utils import Exporter
+from simuPOP.demography import AdmixtureEvent
 import random
 
 def mozParentsChooser(pop):
@@ -33,6 +34,7 @@ pop = sim.Population([100, 10000],
                      infoFields=['ind_id', 'father_id', 'mother_id']
                      )
 sim.initSex(pop)
+
 pop.evolve(
     initOps=[
         sim.InitSex(),
@@ -54,7 +56,7 @@ pop.evolve(
             sim.IdTagger(),
             sim.PedigreeTagger()
         ]),
-        subPopSize=[100, 10000]
+        subPopSize=sim.demography.AdmixtureEvent()
     ),
     gen=5
 )
